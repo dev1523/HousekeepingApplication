@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using System.Globalization;
-using System.Security.AccessControl;
 
 namespace WindowsFormsApp1
 {
@@ -104,8 +98,7 @@ namespace WindowsFormsApp1
                 //Making the DateTime Picker enabled
                 dateTimePicker1.Enabled = true;
 
-                //Making the Click To Confirm Button enabled
-                button2.Enabled = true;
+                
 
                 //Making the Click To Confirm Button enabled
                 button3.Enabled = true;
@@ -126,9 +119,9 @@ namespace WindowsFormsApp1
 
             fileFormat = "TEXT - .txt";
             houseKeepingDate = dateTimePicker1.Value;
-            messageBoxResult = MessageBox.Show("The Path Selected is-" +
-                fbd.SelectedPath + ", File Fromat Selected is-" +
-                fileFormat + ", Selected Housekeeping Date is -" + houseKeepingDate.Date
+            messageBoxResult = MessageBox.Show(" The Deletion Path- " +
+                fbd.SelectedPath + "\n File Fromat Selected is- " +
+                fileFormat + "\n File Deletion Date ( Upto which logs will be deleted ) " + houseKeepingDate.Date
                 , "ARE YOU SURE?", messageBoxButtons);
             if(messageBoxResult == DialogResult.Yes )
                 folderTraversal_fileDetails();
@@ -151,32 +144,12 @@ namespace WindowsFormsApp1
 
         public void folderTraversal_fileDetails() 
         {
-            //dateTimePicker1.Value = DateTime.Now.AddMonths(-1);
-
-
-            //String filePaths store the paths of all the different
-            //files that are to be deleted by the program
-            //right now it is hardcoded as .txt only
-
-            //string[] fileDirectories = Directory.GetDirectories(fbd.SelectedPath, "*");
-            //Array.Resize(ref fileDirectories, fileDirectories.Length + 1);
-            //fileDirectories[fileDirectories.Length - 1] = fbd.SelectedPath;
+            
+            //String filePaths store the paths of all the text files inside selected directory
 
             List<String> filePaths = new List<string>();
             filePaths.AddRange(Directory.GetFiles(fbd.SelectedPath, "*.txt", SearchOption.AllDirectories));
 
-            //int K = 0;
-            //foreach(string directories in fileDirectories)
-            //{
-            //    filePaths.AddRange(Directory.GetFiles(directories, "*.txt")); 
-            //}
-            
-                
-                
-            //qtyPaths is used as an array length for the filePaths
-            //string that is used for dynamic allocation of new 
-            //Data Types like FileAttributes , creationDateTime ,
-            //lastModifiedDateTime
 
             int qtyPaths = filePaths.Count;
 
@@ -195,19 +168,19 @@ namespace WindowsFormsApp1
 
             //lastModifiedDateTime is used to keep a track of the
             //as name suggests the last time it was modified at
-            //it is an uneseccary step but we do it just so we get
-            //an idea about the activity details on the file we are
+            //it is an uneseccary step but we do it just so we get           //an idea about the activity details on the file we are
             //deleting and we can use it for adding security features
             //in the future
 
             DateTime[] lastModifiedDateTime = new DateTime[qtyPaths];
 
-            
 
-            string logFileLocation = String.Concat(Environment.GetFolderPath(Environment.SpecialFolder.Desktop),string.Format("text -{0:yyyy-MM-dd_hh-mm-ss-tt}.txt",
-            DateTime.Now));
+
+            //string logFileLocation = String.Concat(Environment.GetFolderPath(Environment.SpecialFolder.Desktop),string.Format("text -{0:yyyy-MM-dd_hh-mm-ss-tt}.txt",
+            //DateTime.Now));
             //StreamWriter fileDeletionLog = File.CreateText(logFileLocation);
-            
+            string logFileLocation = String.Concat(fbd.SelectedPath, string.Format("text -{0:yyyy-MM-dd_hh-mm-ss-tt}.txt", DateTime.Now));
+
             const int V = 4;
 
 
@@ -298,9 +271,9 @@ namespace WindowsFormsApp1
 
                         //di.Attributes &= ~FileAttributes.ReadOnly;
 
-                        string moveFolder = string.Concat("D:/MoveFolder/",
-                                   string.Format("folder -{0:yyyy-MM-dd_hh-mm-ss-tt}.txt",
-                                   DateTime.Now));
+                        //string moveFolder = string.Concat("D:/MoveFolder/",
+                        //           string.Format("folder -{0:yyyy-MM-dd_hh-mm-ss-tt}.txt",
+                        //          DateTime.Now));
 
                         //File.Move(paths, moveFolder);
                         File.Delete(paths);
@@ -317,28 +290,8 @@ namespace WindowsFormsApp1
                 }
                 progressBar1.Value = progressBar1.Maximum;
             }
-            MessageBox.Show("Number of Files Deleted =" + counter.ToString());
+            MessageBox.Show("Number of Files Deleted = " + counter.ToString());
             //fileDeletion(filePaths , creationDateTime , lastModifiedDateTime , fileAttributes);
-        }
-
-
-        //public void fileDeletion(string[] fileDeletionPaths , DateTime[] fileCreationDate , DateTime[] fileLastAccessDate , FileAttributes[] fileCurrentAttribute)
-        //{
-            
-        //    int i = 0;
-        //    
-        //    foreach ( string paths in fileDeletionPaths)
-        //    {
-                
-        //       
-        //        i++;
-        //    }
-            
-        //}
-
-        private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }
